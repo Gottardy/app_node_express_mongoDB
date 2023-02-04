@@ -17,7 +17,6 @@ router.post('/', [
     check('password','El password es obligatorio y debe ser más de 8 letras').isLength({min:8}),
     check('correo','El correo enviado no es valido').isEmail(),
     check('correo').custom( existeCorreo ),
-    // check('rol','El rol enviado no es valido').isIn(['ADMIN_ROL','USER_ROL']),
     check('rol').custom( esUnRolValido ),
     validarParametros
 ], usersPost );
