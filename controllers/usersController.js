@@ -1,5 +1,7 @@
 const { request, response } = require('express');
 const bcrypt = require('bcryptjs');
+const {validationResult} = require('express-validator');
+
 const Usuario = require('../models/usuario');
 
 const usersGet = (req = request, res = response) => {
@@ -28,6 +30,10 @@ const usersPut = (req = request, res = response) => {
 }
 
 const usersPost = async (req, res = response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json(errors)
+    }
   
     // const body = req.body;
     // const usuario = new Usuario(body);
@@ -36,8 +42,8 @@ const usersPost = async (req, res = response) => {
     const usuario = new Usuario({ nombre, correo, password, rol });
     
     //Verificar si el correo existe
-    const existeCorreo = Usuario.findOne({correo});
-    if ( existeCorreo){
+    const existeCorreo = await Usuario.findOne({correo});
+    if (existeCorreo){
       return res.status(400).json({
         msg: 'El correo enviado ya esta registrado, por favor cambielo'
       })
