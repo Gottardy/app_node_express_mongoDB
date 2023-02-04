@@ -51,7 +51,7 @@ const usersPost = async (req, res = response) => {
 
     res.json({
       msg: 'post API - Controller POST',
-    usuario
+      usuario
     });
   }
 
