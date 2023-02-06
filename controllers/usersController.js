@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const Usuario = require('../models/usuario');
 
 const usersGet = async (req = request, res = response) => {
-    // Desesctruturando el query
+    // Desesctruturando el query de los parametros 
     // Creamos la solicitud de Paginacion de resultados con usuarios con estado 'true'
     const {pag = 5, rang = 0} = req.query;
     const query = {estado: true};
@@ -30,6 +30,7 @@ const usersPut = async (req = request, res = response) => {
     // Recibiendo el parametro 'id' de la ruta y utilizandolo
     const id = req.params.id;
 
+    // Desesctruturando el query de los parametros del body
     const { password, google, correo, ...restoDatos} = req.body;
 
     // Encriptar de nuevo la nueva contraseña 
@@ -66,9 +67,21 @@ const usersPost = async (req, res = response) => {
     });
   }
 
-const usersDelete = (req, res = response) => {
-    res.json({
-    msg: 'delete API - Controller'
+const usersDelete = async (req, res = response) => {
+  // Recibiendo el parametro 'id' de la ruta y utilizandolo
+  const id = req.params.id;
+
+  //Fisicamente borrado de la BD (No se recomienda)
+  // const usuario = await Usuario.findByIdAndDelete(id);
+
+  //Logicamente borrado de la BD, actualizando el estado a false
+  const usuario = await Usuario.findByIdAndUpdate(id,{estado:false});
+
+
+  res.json({
+    msg: "delete API - Controller",
+    id,
+    usuario
   });
 }
 
