@@ -16,9 +16,17 @@ const usuario = require('../models/usuario');
             throw new Error (`El correo {${correo}} enviado ya esta registrado, por favor cambielo`);
          }
    }
+    //Verificar si el id existe en la BD
+    const existeID = async (id) =>{
+        const idPresent = await usuario.findOne({id});  
+        if (id!==idPresent.id){
+            throw new Error (`El ID {${id}} enviado no esta registrado, por favor envie uno ID valido`);
+         }
+   }
     
 
 module.exports = {
     esUnRolValido,
-    existeCorreo
+    existeCorreo,
+    existeID
 }
