@@ -9,12 +9,13 @@ const usersGet = async (req = request, res = response) => {
     // Creamos la solicitud de Paginacion de resultados con usuarios con estado 'true'
     const {pag = 5, rang = 0} = req.query;
     const query = {estado: true};
-    const usuarios = await Usuario.find( query )
-      .skip(Number(rang))
-      .limit(Number(pag));
 
-    // Obetenemos el total de resgistros con usuarios con estado 'true'
-    const totalRegistrosBD = await Usuario.countDocuments(query);
+    const [totalRegistrosBD, usuarios] = await Promise.all([
+      Usuario.countDocuments(query),
+      await Usuario.find( query )
+        .skip(Number(rang))
+        .limit(Number(pag))
+    ])
     const totalRegistrosConsultados =  Object.keys(usuarios).length;
 
     res.json({
