@@ -18,13 +18,24 @@ const usersGet = (req = request, res = response) => {
   });
 }
 
-const usersPut = (req = request, res = response) => {
+const usersPut = async (req = request, res = response) => {
     // Recibiendo el parametro 'id' de la ruta y utilizandolo
     const id = req.params.id;
 
+    const { password, google, correo, ...restoDatos} = req.body;
+
+    // Encriptar de nuevo la nueva contraseña 
+    if (password) {
+      const salt = bcrypt.genSaltSync(12);
+      restoDatos.password = bcrypt.hashSync(password, salt);
+    }
+
+    const usuario = await Usuario.findByIdAndUpdate(id, restoDatos);
+
     res.json({
     msg: 'put API - Controller',
-    id
+    id,
+    usuario
   });
 }
 
