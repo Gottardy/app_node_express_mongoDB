@@ -4,17 +4,24 @@ const bcrypt = require('bcryptjs');
 
 const Usuario = require('../models/usuario');
 
-const usersGet = (req = request, res = response) => {
+const usersGet = async (req = request, res = response) => {
     // Desesctruturando el query
-    const { id, nombre,apellido = 'No Present', edad } = req.query;
+    // Creamos la solicitud de Paginacion de resultados con usuarios con estado 'true'
+    const {pag = 5, rang = 0} = req.query;
+    const query = {estado: true};
+    const usuarios = await Usuario.find( query )
+      .skip(Number(rang))
+      .limit(Number(pag));
+
+    // Obetenemos el total de resgistros con usuarios con estado 'true'
+    const totalRegistrosBD = await Usuario.countDocuments(query);
+    const totalRegistrosConsultados =  Object.keys(usuarios).length;
 
     res.json({
-    msg: 'get API - Controller',
-    // query
-    id,
-    nombre,
-    apellido,
-    edad
+    // msg: 'get API - Controller',
+    totalRegistrosBD,
+    totalRegistrosConsultados,
+    usuarios
   });
 }
 
@@ -33,8 +40,8 @@ const usersPut = async (req = request, res = response) => {
     const usuario = await Usuario.findByIdAndUpdate(id, restoDatos);
 
     res.json({
-    msg: 'put API - Controller',
-    id,
+    // msg: 'put API - Controller',
+    // id,
     usuario
   });
 }
