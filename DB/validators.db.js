@@ -1,5 +1,6 @@
 const Role = require('../models/role');
 const usuario = require('../models/usuario');
+const mongoose = require('mongoose');
 
     //Verificar si el rol existe
     const  esUnRolValido = async (rol = '')=>{
@@ -18,7 +19,9 @@ const usuario = require('../models/usuario');
    }
     //Verificar si el id existe en la BD
     const existeID = async (id) =>{
-        const idPresent = await usuario.findOne({id});  
+        const ID = mongoose.Types.ObjectId(id);
+        const idPresent = await usuario.findById(ID);  
+        // console.log(`${id}-id <--> ${idPresent.id}`);
         if (id!==idPresent.id){
             throw new Error (`El ID {${id}} enviado no esta registrado, por favor envie uno ID valido`);
          }
