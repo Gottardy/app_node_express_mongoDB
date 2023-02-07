@@ -12,6 +12,7 @@ class Server {
 
     // Rutas API
     this.routeUsersPath = '/api/usuarios';
+    this.routeAuthPath = '/api/auth';
 
     // Conexion a la base de datos
     this.conectarBaseDatos();
@@ -41,6 +42,7 @@ class Server {
   // Manejador de rutas
   routes() {
     this.app.use(this.routeUsersPath, require('../routes/userRoute'));
+    this.app.use(this.routeAuthPath, require('../routes/authRoute'));
   }
 
   listener() {
