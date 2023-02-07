@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const Usuario = require('../models/usuario');
 
 const usersGet = async (req = request, res = response) => {
+  console.log('GET sended');
     // Desesctruturando el query de los parametros 
     // Creamos la solicitud de Paginacion de resultados con usuarios con estado 'true'
     const {pag = 5, rang = 0} = req.query;
@@ -23,10 +24,11 @@ const usersGet = async (req = request, res = response) => {
     totalRegistrosBD,
     totalRegistrosConsultados,
     usuarios
-  });
+    });
 }
 
 const usersPut = async (req = request, res = response) => {
+  console.log('PUT sended');
     // Recibiendo el parametro 'id' de la ruta y utilizandolo
     const id = req.params.id;
 
@@ -43,13 +45,12 @@ const usersPut = async (req = request, res = response) => {
 
     res.json({
     // msg: 'put API - Controller',
-    // id,
     usuario
   });
 }
 
 const usersPost = async (req, res = response) => {
-  
+  console.log('POST sended');
     // Desesctruturando el body
     const { nombre, correo, password, rol } = req.body;
     const usuario = new Usuario({ nombre, correo, password, rol });
@@ -62,24 +63,23 @@ const usersPost = async (req, res = response) => {
     await usuario.save();
 
     res.json({
+      // msg: 'post API - Controller',
       msg: 'post API - Controller POST',
       usuario
     });
   }
 
 const usersDelete = async (req, res = response) => {
+  console.log('DELETED sended');
   // Recibiendo el parametro 'id' de la ruta y utilizandolo
   const id = req.params.id;
-
-  //Fisicamente borrado de la BD (No se recomienda)
-  // const usuario = await Usuario.findByIdAndDelete(id);
 
   //Logicamente borrado de la BD, actualizando el estado a false
   const usuario = await Usuario.findByIdAndUpdate(id,{estado:false});
 
 
   res.json({
-    msg: "delete API - Controller",
+    // msg: "delete API - Controller",
     id,
     usuario
   });
