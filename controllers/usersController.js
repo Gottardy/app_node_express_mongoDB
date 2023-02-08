@@ -63,8 +63,7 @@ const usersPost = async (req, res = response) => {
     await usuario.save();
 
     res.json({
-      // msg: 'post API - Controller',
-      msg: 'post API - Controller POST',
+      // msg: 'post API - Controller POST',
       usuario
     });
   }
@@ -73,15 +72,16 @@ const usersDelete = async (req, res = response) => {
   console.log('DELETED sended');
   // Recibiendo el parametro 'id' de la ruta y utilizandolo
   const id = req.params.id;
+  const usuarioAutenticado = req.usuarioAutenticado;
 
-  //Logicamente borrado de la BD, actualizando el estado a false
-  const usuario = await Usuario.findByIdAndUpdate(id,{estado:false});
+  //id Logicamente borrado de la BD, actualizando el estado a false
+  const usuarioEliminado = await Usuario.findByIdAndUpdate(id,{estado:false});
 
 
   res.json({
     // msg: "delete API - Controller",
-    id,
-    usuario
+    usuarioAutenticado,
+    usuarioEliminado
   });
 }
 
