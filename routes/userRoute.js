@@ -4,9 +4,11 @@ const {check} = require('express-validator');
 const {usersGet, usersPut,  usersPost, usersDelete} = require('../controllers/usersController');
 const { esUnRolValido, existeCorreo, existeID } = require('../DB/validators.db');
 
-const { validarJWT } = require('../middlewares/validarAcceso-JWT');
-const { validarParametros } = require('../middlewares/validarCampos');
-const { esAdminRol, tieneRol } = require('../middlewares/validarRol');
+// const { validarJWT } = require('../middlewares/validarAcceso-JWT');
+// const { validarParametros } = require('../middlewares/validarCampos');
+// const { esAdminRol, tieneRol } = require('../middlewares/validarRol');
+const { validarJWT, validarParametros, esAdminRol, tieneRol } = require('../middlewares');
+
 
 const router = Router();
 
